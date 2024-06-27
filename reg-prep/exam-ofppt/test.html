@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .error {
+            border-color: red;
+            outline-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="">
+        <input type="text" id="nom" placeholder="Saisir Nom">
+        <input type="text" id="prenom" placeholder="Saisir Prénom"> <br>
+        <input type="text" id="cin" placeholder="Saisir CIN"> <br>
+
+        <select id="filiere">
+            <option value="">Choisir une filière</option>
+            <option value="DEV">DEV</option>
+            <option value="GE">GE</option>
+            <option value="EMI">EMI</option>
+        </select>
+        <select id="groupe">
+            <option value="">Choisir un Groupe</option>
+        </select> <br>
+
+        <input type="submit" value="Envoyer">
+    </form>
+    <div class="result"></div>
+    <script>
+        let form = document.querySelector('form');
+        let inputNom = document.querySelector('#nom');
+        let inputPrenom = document.querySelector('#prenom');
+        let inputCin = document.querySelector('#cin');
+        let selectFiliere = document.querySelector('#filiere');
+        let selectGroupe = document.querySelector('#groupe');
+        let resultDiv = document.querySelector('.result');
+        let filieres = [
+            { nom: "DEV", groups: ['DEV101', 'DEV102', 'DEV201', 'DEV202'] },
+            { nom: "GE", groups: ['GE101', 'GE201', 'GE202'] },
+            { nom: "EMI", groups: ['EMI101', 'EMI102', 'EMI201'] },
+        ]
+
+        // Q2: validation CIN
+        inputCin.addEventListener('change', (e) => {
+            let regex = /^[A-Za-z]{1,2}\d{4,8}$/;
+            if (regex.test(inputCin.value)) {
+                inputCin.classList.remove('error')
+            } else {
+                inputCin.classList.add('error')
+            }
+        })
+
+        // Q3: select filiere et groupe
+        selectFiliere.addEventListener('change', (e) => {
+            selectGroupe.innerHTML = '<option value="">Choisir un Groupe</option>'
+
+            let filiere = filieres.find(f => f.nom === selectFiliere.value);
+            if (filiere) {
+                let groups = filiere.groups;
+                groups.forEach(group => {
+                    let option = document.createElement('option');
+                    option.value = group
+                    option.textContent = group;
+                    selectGroupe.append(option);
+                })
+            }
+        })
+
+        // Q4: submit formulaire
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // 1 valider les inputs
+            let isValid = true;
+            [inputNom, inputPrenom, selectFiliere, selectGroupe].forEach(input => {
+                if (input.value !== "") {
+                    input.classList.remove('error')
+                } else {
+                    input.classList.add('error')
+                    isValid = false;
+                }
+            })
+
+            let regex = /^[A-Za-z]{1,2}\d{4,8}$/;
+            if (regex.test(inputCin.value)) {
+                inputCin.classList.remove('error')
+            } else {
+                inputCin.classList.add('error')
+                isValid = false;
+            }
+
+            // 2- afficher résultat
+            resultDiv.innerHTML = "";
+            if(isValid){
+                resultDiv.innerHTML = `
+                    Nom : ${inputNom.value} ${inputPrenom.value} <br>
+                    CIN : ${inputCin.value} <br>
+                    Filiere : ${selectFiliere.value} <br>
+                    Groupe : ${selectGroupe.value}
+                `
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental Form</title>
+    <style>
+        .error {
+            border: 2px solid red;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" id="clientName" placeholder="nom Client" />
+    <select id="brand">
+        <option disabled selected hidden>choisi la marque</option>
+    </select>
+    <select id="model">
+        <option disabled selected hidden>choisi le module</option>
+    </select>
+    <input type="number" id="days" placeholder="Saiser lo nomber des jour" min="1" />
+    <button id="addButton">Ajouter</button>
+    <hr />
+    <table border="1" id="dataTable">
+        <tr>
+            <th>client</th>
+            <th>marquee</th>
+            <th>modile</th>
+            <th>noumber jours</th>
+            <th>prix par jour</th>
+            <th>prix total</th>
+        </tr>
+    </table>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const carData = [
+                { brand: "Toyota", model: "Camry", rentalPricePerDay: 45 },
+                { brand: "Toyota", model: "Corolla", rentalPricePerDay: 40 },
+                { brand: "Toyota", model: "Prius", rentalPricePerDay: 50 },
+                { brand: "Honda", model: "Civic", rentalPricePerDay: 40 },
+                { brand: "Honda", model: "Accord", rentalPricePerDay: 45 },
+                { brand: "Honda", model: "Fit", rentalPricePerDay: 35 },
+                { brand: "Ford", model: "Mustang", rentalPricePerDay: 75 },
+                { brand: "Ford", model: "Focus", rentalPricePerDay: 35 },
+                { brand: "Ford", model: "Fusion", rentalPricePerDay: 50 },
+                { brand: "Chevrolet", model: "Malibu", rentalPricePerDay: 50 },
+                { brand: "Chevrolet", model: "Impala", rentalPricePerDay: 55 },
+                { brand: "Chevrolet", model: "Spark", rentalPricePerDay: 30 },
+                { brand: "BMW", model: "3 Series", rentalPricePerDay: 120 },
+                { brand: "BMW", model: "5 Series", rentalPricePerDay: 150 },
+                { brand: "BMW", model: "X3", rentalPricePerDay: 130 },
+                { brand: "Audi", model: "A4", rentalPricePerDay: 130 },
+                { brand: "Audi", model: "A6", rentalPricePerDay: 160 },
+                { brand: "Audi", model: "Q5", rentalPricePerDay: 140 },
+                { brand: "Mercedes-Benz", model: "C-Class", rentalPricePerDay: 150 },
+                { brand: "Mercedes-Benz", model: "E-Class", rentalPricePerDay: 180 },
+                { brand: "Mercedes-Benz", model: "GLA", rentalPricePerDay: 160 },
+                { brand: "Tesla", model: "Model 3", rentalPricePerDay: 200 },
+                { brand: "Tesla", model: "Model S", rentalPricePerDay: 250 },
+                { brand: "Tesla", model: "Model X", rentalPricePerDay: 300 },
+                { brand: "Nissan", model: "Altima", rentalPricePerDay: 45 },
+                { brand: "Nissan", model: "Sentra", rentalPricePerDay: 40 },
+                { brand: "Nissan", model: "Maxima", rentalPricePerDay: 60 },
+                { brand: "Hyundai", model: "Elantra", rentalPricePerDay: 35 },
+                { brand: "Hyundai", model: "Sonata", rentalPricePerDay: 40 },
+                { brand: "Hyundai", model: "Tucson", rentalPricePerDay: 50 }
+            ];
+
+            function updateModels() {
+                const brandSelect = document.getElementById('brand');
+                const modelSelect = document.getElementById('model');
+                const selectedBrand = brandSelect.value;
+
+                modelSelect.innerHTML = '<option disabled selected hidden>choisi le module</option>';
+
+                const models = carData.filter(car => car.brand === selectedBrand).map(car => car.model);
+                models.forEach(model => {
+                    const option = document.createElement('option');
+                    option.textContent = model;
+                    modelSelect.appendChild(option);
+                });
+            }
+
+            function validateFields(fields) {
+                let valid = true;
+                fields.forEach(field => {
+                    if (!field.value) {
+                        field.classList.add('error');
+                        valid = false;
+                    } else {
+                        field.classList.remove('error');
+                    }
+                });
+                return valid;
+            }
+
+            function addData() {
+                const clientName = document.getElementById('clientName');
+                const brand = document.getElementById('brand');
+                const model = document.getElementById('model');
+                const days = document.getElementById('days');
+
+                const fieldsToValidate = [clientName, brand, model, days];
+
+                if (validateFields(fieldsToValidate)) {
+                    const car = carData.find(car => car.brand === brand.value && car.model === model.value);
+                    const pricePerDay = car.rentalPricePerDay;
+                    const totalPrice = pricePerDay * days.value;
+
+                    const table = document.getElementById('dataTable');
+                    const row = table.insertRow();
+                    row.insertCell(0).textContent = clientName.value;
+                    row.insertCell(1).textContent = brand.value;
+                    row.insertCell(2).textContent = model.value;
+                    row.insertCell(3).textContent = days.value;
+                    row.insertCell(4).textContent = pricePerDay;
+                    row.insertCell(5).textContent = totalPrice;
+
+                    fieldsToValidate.forEach(field => field.value = '');
+                    model.innerHTML = '<option disabled selected hidden>choisi le module</option>';
+                } else {
+                    alert('Please fill out all fields.');
+                }
+            }
+
+           
+            const brands = [...new Set(carData.map(car => car.brand))];
+            const brandSelect = document.getElementById('brand');
+            brands.forEach(brand => {
+                const option = document.createElement('option');
+                option.value = option.textContent = brand;
+                brandSelect.appendChild(option);
+            });
+
+           
+            brandSelect.addEventListener('change', updateModels);
+
+            
+            document.getElementById('addButton').addEventListener('click', addData);
+        });
+    </script>
+</body>
+
+</html>

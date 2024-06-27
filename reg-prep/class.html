@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* General Styles */
+    body {
+      font-family: "Montserrat", sans-serif;
+      background-color: #f9f9f9;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* justify-content: center; */
+      height: 100vh;
+    }
+
+    /* Input Styles */
+    input {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      margin-right: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      background-color: #ffffff;
+    }
+
+    /* Button Styles */
+    button {
+      padding: 12px 30px;
+      background-color: #8e44ad;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #7d3c98;
+    }
+
+    /* Table Styles */
+    table {
+      width: 80%;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th,
+    td {
+      padding: 15px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #8e44ad;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    /* Delete Button Styles */
+    td button {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    td button:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <input type="text" id="nom" placeholder="Nom" />
+    <input type="number" id="age" placeholder="Age" />
+    <button onclick="ajouter()">Ajouter</button>
+  </div>
+  <p style="color: red;" id="error"></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <script>
+    // 1- développer le bouton ajouter commme suit:
+    // - si la valeur du nom et age sont remplies, ajouter une nouvelle <tr> à la fin de <tbody>
+    // - vider les inputs.
+    // 2- pour chaque <tr>, ajouter un bouton "Supprimer", si on y click le <tr> sera supprimé.
+    const ajouter = () => {
+      const name = document.getElementById("nom").value;
+      const age = document.getElementById("age").value;
+      let result = document.getElementById("tbody");
+      const error = document.getElementById("error");
+
+      // 1- valider les inputs
+      if (!name || !age) {
+        error.innerHTML = "Entrez des informations valides";
+        setTimeout(() => {
+          error.innerHTML = "";
+        }, 1000);
+        return;
+      }
+
+      // 2- créer les <tr> dans le tableau
+      const newRow = document.createElement("tr");
+      newRow.innerHTML = `
+            <td>${name}</td>
+            <td>${age}</td>
+            <td><button onclick="remove(this)">&#10005;</button></td>
+          `;
+      result.append(newRow);
+
+      // 3- vider les inputs
+      document.getElementById("nom").value = "";
+      document.getElementById("age").value = "";
+    };
+
+    // remove function
+    const remove = (btn) => {
+      // get the row from the btn
+      const row = btn.parentElement.parentElement;
+      console.log(row);
+      // get the tbody
+      row.remove();
+    };
+  </script>
+</body>
+
+</html>

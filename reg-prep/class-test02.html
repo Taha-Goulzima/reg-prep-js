@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+       @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f8f8f8;
+  color: #333;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+button {
+  background-color: royalblue;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 10px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.tabs {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.tab {
+  padding: 20px;
+  border-radius: 4px;
+  background-color: #f2f2f2;
+  margin-bottom: 20px;
+}
+
+.tab h1 {
+  margin-top: 0;
+}
+      .show {
+        display: block;
+      }
+      .hide {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="actions">
+      <button disabled id="prev" onclick="precedent()">précédent</button>
+      <button onclick="suivant()" id="next">Suivant</button>
+    </div>
+    <div class="tabs">
+      <div class="tab">
+        <h1>TAB1</h1>
+        <p>
+          Lorem1 ipsum, dolor sit amet consectetur adipisicing elit. Beatae nobis
+          ducimus fuga hic veritatis laudantium obcaecati maiores perspiciatis
+          voluptatum qui! Sunt commodi vero reiciendis consequatur voluptatum
+          repudiandae quaerat eius libero.
+        </p>
+      </div>
+      <div class="tab">
+        <h1>TAB2</h1>
+        <p>
+          Lorem2 ipsum, dolor sit amet consectetur adipisicing elit. Beatae nobis
+          ducimus fuga hic veritatis laudantium obcaecati maiores perspiciatis
+          voluptatum qui! Sunt commodi vero reiciendis consequatur voluptatum
+          repudiandae quaerat eius libero.
+        </p>
+      </div>
+      <div class="tab">
+        <h1>TAB3</h1>
+        <p>
+          Lorem3 ipsum, dolor sit amet consectetur adipisicing elit. Beatae nobis
+          ducimus fuga hic veritatis laudantium obcaecati maiores perspiciatis
+          voluptatum qui! Sunt commodi vero reiciendis consequatur voluptatum
+          repudiandae quaerat eius libero.
+        </p>
+      </div>
+      <div class="tab">
+        <h1>TAB4</h1>
+        <p>
+          Lorem4 ipsum, dolor sit amet consectetur adipisicing elit. Beatae nobis
+          ducimus fuga hic veritatis laudantium obcaecati maiores perspiciatis
+          voluptatum qui! Sunt commodi vero reiciendis consequatur voluptatum
+          repudiandae quaerat eius libero.
+        </p>
+      </div>
+      <div class="tab">
+        <h1>TAB5</h1>
+        <p>
+          Lorem5 ipsum, dolor sit amet consectetur adipisicing elit. Beatae nobis
+          ducimus fuga hic veritatis laudantium obcaecati maiores perspiciatis
+          voluptatum qui! Sunt commodi vero reiciendis consequatur voluptatum
+          repudiandae quaerat eius libero.
+        </p>
+      </div>
+    </div>
+    <script>
+      let indexTabCourante = 0; // indice de la tab qui est affichée
+    // init page
+      let tabs = document.querySelectorAll(".tab");
+      let prev = document.getElementById("prev");
+      let next = document.getElementById("next");
+
+      // hide all tabs except first one
+      tabs.forEach((tab,index) => {
+        if(index !== indexTabCourante){
+          tab.classList.add('hide')
+        }
+      });
+
+      // handle "Suivant" btn click event
+      const suivant = () => {
+        tabs[indexTabCourante].classList.add("hide");
+        tabs[indexTabCourante + 1].classList.remove("hide");
+        indexTabCourante += 1;
+        prev.removeAttribute("disabled");
+        if (indexTabCourante === tabs.length - 1) {
+          next.setAttribute("disabled", "disabled");
+        }
+      };
+      
+      // handle "Précédent" btn click event
+      const precedent = () => {
+        tabs[indexTabCourante].classList.add("hide");
+        tabs[indexTabCourante - 1].classList.remove("hide");
+        indexTabCourante -=1
+        if (indexTabCourante === 0) {
+          prev.setAttribute("disabled", "disabled");
+        }
+        next.removeAttribute("disabled");
+       
+      };
+      
+
+    </script>
+  </body>
+</html>
